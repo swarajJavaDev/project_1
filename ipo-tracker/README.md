@@ -107,10 +107,22 @@ Content-Type: application/json
 
 {
   "name": "John Doe",
-  "pan": "ABCDE1234F",
-  "dematId": "DP12345678",
+  "pan": "ABCDE1234F",        // Optional field
+  "dematId": "DP12345678",    // Optional field  
   "ipoName": "Reliance Industries",
   "applicationDate": "2024-01-15",
+  "allotmentStatus": "PENDING"
+}
+```
+
+**Note**: The `pan` and `dematId` fields are optional and can be omitted or set to `null`.
+
+**Example without PAN/Demat ID:**
+```json
+{
+  "name": "Jane Smith",
+  "ipoName": "TCS IPO",
+  "applicationDate": "2024-01-20",
   "allotmentStatus": "PENDING"
 }
 ```
