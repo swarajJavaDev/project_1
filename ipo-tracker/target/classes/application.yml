@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: ipo-tracker
+  
+  datasource:
+    url: jdbc:mysql://localhost:3306/ipo_tracker_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+  
+  security:
+    user:
+      name: admin
+      password: admin123
+      roles: ADMIN
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+logging:
+  level:
+    com.ipotracker: DEBUG
+    org.springframework.security: DEBUG
+
+# External API configuration
+external:
+  api:
+    ipo:
+      base-url: https://api.example.com/ipo
+      timeout: 5000
+
+---
+# Profile for H2 testing
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: true

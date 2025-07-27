@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ipo-tracker-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ipo_tracker_db
+      MYSQL_USER: ipo_user
+      MYSQL_PASSWORD: ipo_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - ipo-tracker-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  app:
+    build: .
+    container_name: ipo-tracker-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ipo_tracker_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ipo_user
+      SPRING_DATASOURCE_PASSWORD: ipo_password
+    ports:
+      - "8080:8080"
+    networks:
+      - ipo-tracker-network
+
+volumes:
+  mysql_data:
+
+networks:
+  ipo-tracker-network:
+    driver: bridge
